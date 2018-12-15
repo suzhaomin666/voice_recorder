@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">voice_recorder</string>
+    <string name="action_licenses">Licenses</string>
+    <string name="action_settings">Settings</string>
+    <string name="tab_title_record">Record</string>
+    <string name="tab_title_saved_recordings">Saved Recordings</string>
 </resources>
