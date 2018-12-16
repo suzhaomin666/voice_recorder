@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PagerSlidingTabStrip tabStrip = findViewById(R.id.tab);
-
         // 设置Tab底部选中的指示器 Indicator的颜色
         tabStrip.setIndicatorColor(Color.GRAY);
         tabStrip.setIndicatorHeight(1);
