@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".RecordingService"/>
+        <service android:name=".RecordingService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

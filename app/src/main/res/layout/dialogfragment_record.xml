@@ -9,8 +9,7 @@
     card_view:cardElevation="3dp"
     android:transitionName="open_mediaplayer"
     android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    >
+    android:layout_centerHorizontal="true">
 
     <RelativeLayout
         android:layout_width="fill_parent"

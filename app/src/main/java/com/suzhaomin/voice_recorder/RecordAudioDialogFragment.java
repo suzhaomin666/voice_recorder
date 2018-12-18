@@ -68,12 +68,12 @@ public class RecordAudioDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_record_audio, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialogfragment_record, null);
         initView(view);
 
         mFabRecord.setColorNormal(getResources().getColor(R.color.colorPrimary));
         mFabRecord.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));
-
+        //动态申请权限，申请成功后进入onRecord方法
         mFabRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +84,7 @@ public class RecordAudioDialogFragment extends DialogFragment {
                 }else {
                     onRecord(mStartRecording);
                     mStartRecording = !mStartRecording;
+                    //按第一下是开启，第二下是关闭，利用反转实现
                 }
 
             }
@@ -122,11 +123,11 @@ public class RecordAudioDialogFragment extends DialogFragment {
                 folder.mkdir();
             }
 
-            //start Chronometer
+            //开始计时
             mChronometerTime.setBase(SystemClock.elapsedRealtime());
             mChronometerTime.start();
 
-            //start RecordingService
+            //启动服务
             getActivity().startService(intent);
             //keep screen on while recording
 //            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -145,6 +146,25 @@ public class RecordAudioDialogFragment extends DialogFragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
+    //暂停事件
+//    private void onPauseRecord(boolean pause) {
+////        if (pause) {
+////            //pause recording
+////            mPauseButton.setCompoundDrawablesWithIntrinsicBounds
+////                    (R.drawable.ic_media_play ,0 ,0 ,0);
+////            mRecordingPrompt.setText((String)getString(R.string.resume_recording_button).toUpperCase());
+////            timeWhenPaused = mChronometer.getBase() - SystemClock.elapsedRealtime();
+////            mChronometer.stop();
+////        } else {
+////            //resume recording
+////            mPauseButton.setCompoundDrawablesWithIntrinsicBounds
+////                    (R.drawable.ic_media_pause ,0 ,0 ,0);
+////            mRecordingPrompt.setText((String)getString(R.string.pause_recording_button).toUpperCase());
+////            mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
+////            mChronometer.start();
+////        }
+////    }
+
 
     public void setOnCancelListener(OnAudioCancelListener listener) {
         this.mListener = listener;

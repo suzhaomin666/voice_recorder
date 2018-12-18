@@ -84,7 +84,7 @@ public class PlaybackDialogFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_media_playback, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_playing, null);
 
         mFileNameTextView = (TextView) view.findViewById(R.id.file_name_text_view);
         mFileLengthTextView = (TextView) view.findViewById(R.id.file_length_text_view);

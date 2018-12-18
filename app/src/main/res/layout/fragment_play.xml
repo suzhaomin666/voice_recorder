@@ -1,17 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:voiceView="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/b1"
-        android:text="luyin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/b2"
-        android:text="bofang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.carlos.voiceline.mylibrary.VoiceLineView
+        android:id="@+id/voicLine"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/white"
+        voiceView:middleLine="@android:color/holo_red_light"
+        voiceView:middleLineHeight="1dp"
+        voiceView:rectSpace="2dp"
+        voiceView:rectWidth="5dp"
+        voiceView:viewMode="line"
+        android:layout_weight="1"
+        voiceView:voiceLine="@android:color/holo_red_light" />
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="48dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="12dp"
+        android:layout_weight="1">
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/record_audio_fab_record"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/record_audio_chronometer_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_mic_white_36dp"
+            app:fab_colorNormal="@color/colorPrimary" />
+
+        <Chronometer
+            android:id="@+id/record_audio_chronometer_time"
+            android:layout_width="240dp"
+            android:layout_height="84dp"
+            android:layout_below="@+id/record_audio_iv_close"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:textSize="60sp" />
+
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="24dp"
+            android:layout_alignEnd="@+id/record_audio_chronometer_time"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="" />
+    </RelativeLayout>
 </LinearLayout>
