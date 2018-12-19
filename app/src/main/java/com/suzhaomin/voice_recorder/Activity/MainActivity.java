@@ -18,6 +18,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter;
 import com.suzhaomin.voice_recorder.Fragments.RecorderFragment;
 import com.suzhaomin.voice_recorder.Fragments.RecycleviewFragment;
+import com.suzhaomin.voice_recorder.Fragments.speech_recognition;
 import com.suzhaomin.voice_recorder.R;
 import com.suzhaomin.voice_recorder.Adapters.TabPagerAdapter;
 
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         //底部横线与字体宽度一致
 //        tabStrip.setIndicatorinFollower(true);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        Fragment[] fragments = {new RecorderFragment(), new RecycleviewFragment(),};
-        String[] titles = {"录音", "列表"};
+        Fragment[] fragments = {new RecorderFragment(), new RecycleviewFragment(),new speech_recognition()};
+        String[] titles = {"录音", "列表","识别"};
         TabPagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), fragments, titles);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Light);
