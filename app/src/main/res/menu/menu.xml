@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_back"
+        app:showAsAction="ifRoom"
+        android:title="取消" />
+    <item
+        android:id="@+id/action_delete"
+        app:showAsAction="ifRoom"
+        android:title="删除" />
+    <!--<item-->
+        <!--android:id="@+id/action_share"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="分享" />-->
+
+</menu>

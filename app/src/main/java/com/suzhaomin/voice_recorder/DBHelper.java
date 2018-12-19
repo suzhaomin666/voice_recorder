@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.suzhaomin.voice_recorder.Listeners.OnDatabaseChangedListener;
+
 import java.util.Comparator;
 
 public class DBHelper extends SQLiteOpenHelper {
     private Context mContext;
-
     private static final String LOG_TAG = "DBHelper";
-
     private static OnDatabaseChangedListener mOnDatabaseChangedListener;
 
     public static final String databasename = "saved_recordings.db";
@@ -31,15 +31,16 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
 
 
-    private static final String COMMA_SEP = ",";
+    private static final String Douhao = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DBHelperItem.table_name + " (" +
-                    DBHelperItem._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
-                    DBHelperItem.name + TEXT_TYPE + COMMA_SEP +
-                    DBHelperItem.filepath + TEXT_TYPE + COMMA_SEP +
-                    DBHelperItem.record_length + " INTEGER " + COMMA_SEP +
+                    DBHelperItem._ID + " INTEGER PRIMARY KEY" + Douhao +
+                    DBHelperItem.name + TEXT_TYPE + Douhao +
+                    DBHelperItem.filepath + TEXT_TYPE + Douhao +
+                    DBHelperItem.record_length + " INTEGER " + Douhao +
                     DBHelperItem.time_added + " INTEGER " + ")";
 
+    //删除数据库
     @SuppressWarnings("unused")
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBHelperItem.table_name;
 
@@ -90,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] whereArgs = { String.valueOf(id) };
         db.delete(DBHelperItem.table_name, "_ID=?", whereArgs);
     }
-
+    //获取个数
     public int getCount() {
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = { DBHelperItem._ID };

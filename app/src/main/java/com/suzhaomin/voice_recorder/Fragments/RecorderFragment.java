@@ -2,7 +2,6 @@ package com.suzhaomin.voice_recorder.Fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +29,6 @@ import android.widget.Toast;
 import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.melnykov.fab.FloatingActionButton;
 import com.suzhaomin.voice_recorder.R;
-import com.suzhaomin.voice_recorder.RecordAudioDialogFragment;
 import com.suzhaomin.voice_recorder.RecordingService;
 import com.suzhaomin.voice_recorder.volumcallback;
 
@@ -52,7 +49,7 @@ public class RecorderFragment extends Fragment{
     private View view;
     private boolean isBind;
     RecordingService recordingService;
-    private RecordAudioDialogFragment.OnAudioCancelListener mListener;
+
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -85,7 +82,7 @@ public class RecorderFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         view = getActivity().getLayoutInflater().inflate(R.layout.fragment_play, null);
+         view = getActivity().getLayoutInflater().inflate(R.layout.fragment_recorder, null);
         mChronometerTime = (Chronometer) view.findViewById(R.id.record_audio_chronometer_time);
         mFabRecord = (FloatingActionButton) view.findViewById(R.id.record_audio_fab_record);
         mIvClose = (ImageView) view.findViewById(R.id.record_audio_iv_close);
@@ -152,10 +149,8 @@ public class RecorderFragment extends Fragment{
         public void onServiceConnected(ComponentName name, IBinder service) {
             RecordingService.RecordingServiceBinder rcs = (RecordingService.RecordingServiceBinder) service;
             recordingService = rcs.getService();
-            Log.v("asd","注册");
             recordingService.registerCallback(new volumcallback() {
                 public void updatevolum(int dbvalue) {
-                    Log.v("asd","注册是");
                     Message message = Message.obtain();
                     message.what = 1;
                     message.arg1 = dbvalue;
@@ -191,9 +186,7 @@ public class RecorderFragment extends Fragment{
 ////    }
 
 
-    public void setOnCancelListener(RecordAudioDialogFragment.OnAudioCancelListener listener) {
-        this.mListener = listener;
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

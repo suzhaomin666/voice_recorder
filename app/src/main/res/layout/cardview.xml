@@ -24,7 +24,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_fileviewer"
+                android:src="@drawable/mai"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"/>
@@ -62,7 +62,19 @@
                     android:fontFamily="sans-serif-condensed"/>
             </LinearLayout>
 
+                <CheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"/>
+
+
         </LinearLayout>
+
 
     </android.support.v7.widget.CardView>
 

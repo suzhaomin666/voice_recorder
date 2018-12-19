@@ -143,8 +143,6 @@ public class RecordingService extends Service {
                 } else {
                     Log.v(LOG_TAG, "mcall is null");
                 }
-
-
             }
 
 

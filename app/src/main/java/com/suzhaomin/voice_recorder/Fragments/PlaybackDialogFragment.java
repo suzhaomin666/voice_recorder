@@ -1,4 +1,4 @@
-package com.suzhaomin.voice_recorder;
+package com.suzhaomin.voice_recorder.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,15 +19,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.suzhaomin.voice_recorder.Activity.MainActivity;
+import com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter;
+import com.suzhaomin.voice_recorder.R;
+import com.suzhaomin.voice_recorder.RecordingItem;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 播放录音的 DialogFragment
- *
- * Created by developerHaoz on 2017/8/12.
- */
+import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setShowCheckBox;
 
 public class PlaybackDialogFragment extends DialogFragment {
 
@@ -71,6 +73,8 @@ public class PlaybackDialogFragment extends DialogFragment {
         seconds = TimeUnit.MILLISECONDS.toSeconds(itemDuration)
                 - TimeUnit.MINUTES.toSeconds(minutes);
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

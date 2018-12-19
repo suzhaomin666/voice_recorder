@@ -1,4 +1,4 @@
-package com.suzhaomin.voice_recorder;
+package com.suzhaomin.voice_recorder.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

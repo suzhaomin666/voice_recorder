@@ -5,11 +5,11 @@ import android.os.Parcelable;
 
 
 public class RecordingItem implements Parcelable {
-    private String mName; // file name
-    private String mFilePath; //file path
-    private int mId; //id in database
-    private int mLength; // length of recording in seconds
-    private long mTime; // date/time of the recording
+    private String mName;
+    private String mFilePath;
+    private int mId;
+    private int mLength;
+    private long mTime;
 
     public RecordingItem()
     {
