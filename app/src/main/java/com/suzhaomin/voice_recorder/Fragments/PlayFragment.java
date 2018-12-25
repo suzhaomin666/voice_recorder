@@ -10,8 +10,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,43 +17,30 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.suzhaomin.voice_recorder.Activity.MainActivity;
-import com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter;
 import com.suzhaomin.voice_recorder.R;
 import com.suzhaomin.voice_recorder.RecordingItem;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setShowCheckBox;
-
-public class PlaybackDialogFragment extends DialogFragment {
-
+public class PlayFragment extends DialogFragment {
     private static final String LOG_TAG = "PlaybackFragment";
-
     private static final String ARG_ITEM = "recording_item";
     private RecordingItem item;
-
     private Handler mHandler = new Handler();
-
     private MediaPlayer mMediaPlayer = null;
-
     private SeekBar mSeekBar = null;
     private FloatingActionButton mPlayButton = null;
     private TextView mCurrentProgressTextView = null;
     private TextView mFileNameTextView = null;
     private TextView mFileLengthTextView = null;
-
-    //stores whether or not the mediaplayer is currently playing audio
     private boolean isPlaying = false;
-
-    //stores minutes and seconds of the length of the file.
     long minutes = 0;
     long seconds = 0;
     private static long mFileLength = 0;
 
-    public static PlaybackDialogFragment newInstance(RecordingItem item) {
-        PlaybackDialogFragment f = new PlaybackDialogFragment();
+    public static PlayFragment newInstance(RecordingItem item) {
+        PlayFragment f = new PlayFragment();
         Bundle b = new Bundle();
         b.putParcelable(ARG_ITEM, item);
         f.setArguments(b);
@@ -123,7 +108,6 @@ public class PlaybackDialogFragment extends DialogFragment {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 if(mMediaPlayer != null) {
-                    // remove message Handler from updating progress bar
                     mHandler.removeCallbacks(mRunnable);
                 }
             }
@@ -156,8 +140,7 @@ public class PlaybackDialogFragment extends DialogFragment {
         mFileLengthTextView.setText(String.format("%02d:%02d", minutes,seconds));
 
         builder.setView(view);
-
-        // request a window without the title
+        //设置无标题
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         return builder.create();
@@ -244,10 +227,7 @@ public class PlaybackDialogFragment extends DialogFragment {
     }
 
     private void prepareMediaPlayerFromPoint(int progress) {
-        //set mediaPlayer to start from middle of the audio file
-
         mMediaPlayer = new MediaPlayer();
-
         try {
             mMediaPlayer.setDataSource(item.getFilePath());
             mMediaPlayer.prepare();
@@ -264,8 +244,6 @@ public class PlaybackDialogFragment extends DialogFragment {
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
-
-        //keep screen on while playing audio
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -295,12 +273,9 @@ public class PlaybackDialogFragment extends DialogFragment {
 
         mCurrentProgressTextView.setText(mFileLengthTextView.getText());
         mSeekBar.setProgress(mSeekBar.getMax());
-
-        //allow the screen to turn off again once audio is finished playing
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    //updating mSeekBar
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {

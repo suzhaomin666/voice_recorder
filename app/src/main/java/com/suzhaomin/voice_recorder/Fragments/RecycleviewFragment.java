@@ -1,7 +1,5 @@
 package com.suzhaomin.voice_recorder.Fragments;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.Handler;
@@ -14,25 +12,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.suzhaomin.voice_recorder.Activity.MainActivity;
 import com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter;
-import com.suzhaomin.voice_recorder.DBHelper;
-import com.suzhaomin.voice_recorder.Listeners.OnDatabaseChangedListener;
 import com.suzhaomin.voice_recorder.R;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.isDeletemodel;
+import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.isIsopened;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.isShowCheckBox;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.map;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setDeletemodel;
+import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setIsopened;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setShowCheckBox;
 
 
@@ -62,25 +55,6 @@ public class RecycleviewFragment extends Fragment {
         //打开observer的文件监控
         observer.startWatching();
         setHasOptionsMenu(true);
-        isopened=true;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        isopened=true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        isopened=false;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isopened=false;
     }
 
     @Override
@@ -89,7 +63,6 @@ public class RecycleviewFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-
         //确保尺寸是通过用户输入从而确保RecyclerView的尺寸是一个常数
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         //新添加的在下面，当超出屏幕范围的时候吧上面的顶上去
@@ -99,44 +72,36 @@ public class RecycleviewFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mFileViewerAdapter = new FileViewerAdapter(getActivity(), llm);
         mRecyclerView.setAdapter(mFileViewerAdapter);
-
         return v;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        // Handle presses on the action bar items
-
         switch (item.getItemId()) {
             case R.id.action_back:
-                Log.v("asf", "i am coming");
+                Log.v(LOG_TAG, "i am coming");
                 if (isShowCheckBox())
                     setShowCheckBox(false);
                 if (isDeletemodel())
                     setDeletemodel(false);
+                if(isIsopened())
+                    setIsopened(false);
                 mFileViewerAdapter.notifyDataSetChanged();
                 //将键值对进行初始化
                 map = new HashMap<>();
                 for (int i = 0; i < 1000; i++)
                     map.put(i, false);
                 return true;
-//            case R.id.action_share:
-//
-//                return true;
             case R.id.action_delete:
                 if (!isDeletemodel()) {
                     //如果不是删除模式，那么显示出取消按钮和复选框
-                    Log.v("Agasfga","非删除模式");
+                    Log.v(LOG_TAG,"非删除模式");
                     setDeletemodel(true);
                     for (int i = 0; i < 1000; i++)
                         map.put(i, false);
                     mFileViewerAdapter.notifyDataSetChanged();
-
                 }
-               else {
+                else {
                     //如果是删除模式，进行删除，然后初始化
                     Log.v("Agasfga","删除模式");
                     int deletecenter=0;

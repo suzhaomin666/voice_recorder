@@ -26,9 +26,7 @@ import java.util.ArrayList;
 public class speech_recognition extends Fragment {
     private View view;
     public static speech_recognition newInstance() {
-
         Bundle args = new Bundle();
-
         speech_recognition fragment = new speech_recognition();
         fragment.setArguments(args);
         return fragment;
@@ -70,7 +68,6 @@ public class speech_recognition extends Fragment {
             public void onResult(RecognizerResult recognizerResult, boolean isLast) {
                 if (!isLast) {
                     //解析语音
-                    //返回的result为识别后的汉字,直接赋值到TextView上即可
                     String result = parseVoice(recognizerResult.getResultString());
                     TextView t1=view.findViewById(R.id.t1);
                     t1.setText(result);

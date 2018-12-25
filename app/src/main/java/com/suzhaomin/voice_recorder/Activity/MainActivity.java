@@ -22,6 +22,7 @@ import com.suzhaomin.voice_recorder.Fragments.speech_recognition;
 import com.suzhaomin.voice_recorder.R;
 import com.suzhaomin.voice_recorder.Adapters.TabPagerAdapter;
 
+import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.isIsopened;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.isShowCheckBox;
 import static com.suzhaomin.voice_recorder.Adapters.FileViewerAdapter.setShowCheckBox;
 import static com.suzhaomin.voice_recorder.Fragments.RecycleviewFragment.isopened;
@@ -73,15 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_delete).setVisible(isopened);
-//        menu.findItem(R.id.action_share).setVisible(isShowCheckBox());
+        menu.findItem(R.id.action_delete).setVisible(isIsopened());
         menu.findItem(R.id.action_back).setVisible(isShowCheckBox());
         invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);

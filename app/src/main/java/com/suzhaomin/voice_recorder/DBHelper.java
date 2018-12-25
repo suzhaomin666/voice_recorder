@@ -15,10 +15,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private Context mContext;
     private static final String LOG_TAG = "DBHelper";
     private static OnDatabaseChangedListener mOnDatabaseChangedListener;
-
     public static final String databasename = "saved_recordings.db";
     private static final int databaseversion = 1;
-
     public static abstract class DBHelperItem implements BaseColumns {
         public static final String table_name = "saved_recordings";
         public static final String name = "recording_name";
@@ -27,17 +25,14 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String time_added = "time_added";
     }
 
-
     private static final String TEXT_TYPE = " TEXT";
 
-
-    private static final String Douhao = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DBHelperItem.table_name + " (" +
-                    DBHelperItem._ID + " INTEGER PRIMARY KEY" + Douhao +
-                    DBHelperItem.name + TEXT_TYPE + Douhao +
-                    DBHelperItem.filepath + TEXT_TYPE + Douhao +
-                    DBHelperItem.record_length + " INTEGER " + Douhao +
+                    DBHelperItem._ID + " INTEGER PRIMARY KEY" + "," +
+                    DBHelperItem.name + TEXT_TYPE + "," +
+                    DBHelperItem.filepath + TEXT_TYPE + "," +
+                    DBHelperItem.record_length + " INTEGER " + "," +
                     DBHelperItem.time_added + " INTEGER " + ")";
 
     //删除数据库
@@ -100,11 +95,9 @@ public class DBHelper extends SQLiteOpenHelper {
         c.close();
         return count;
     }
-
     public Context getContext() {
         return mContext;
     }
-
     public class RecordingComparator implements Comparator<RecordingItem> {
         public int compare(RecordingItem item1, RecordingItem item2) {
             Long o1 = item1.getTime();
@@ -122,11 +115,9 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DBHelperItem.record_length, length);
         cv.put(DBHelperItem.time_added, System.currentTimeMillis());
         long rowId = db.insert(DBHelperItem.table_name, null, cv);
-
         if (mOnDatabaseChangedListener != null) {
             mOnDatabaseChangedListener.onNewDatabaseEntryAdded();
         }
-
         return rowId;
     }
 
@@ -137,7 +128,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DBHelperItem.filepath, filePath);
         db.update(DBHelperItem.table_name, cv,
                 DBHelperItem._ID + "=" + item.getId(), null);
-
         if (mOnDatabaseChangedListener != null) {
             mOnDatabaseChangedListener.onDatabaseEntryRenamed();
         }
@@ -152,9 +142,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DBHelperItem.time_added, item.getTime());
         cv.put(DBHelperItem._ID, item.getId());
         long rowId = db.insert(DBHelperItem.table_name, null, cv);
-        if (mOnDatabaseChangedListener != null) {
-            //mOnDatabaseChangedListener.onNewDatabaseEntryAdded();
-        }
         return rowId;
     }
 }

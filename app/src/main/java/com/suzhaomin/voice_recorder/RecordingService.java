@@ -104,10 +104,6 @@ public class RecordingService extends Service {
             mRecorder.start();
             //获取当前系统时间来作为开始录音的时间
             mStartingTimeMillis = System.currentTimeMillis();
-
-            //startTimer();
-            //startForeground(1, createNotification());
-
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -117,9 +113,6 @@ public class RecordingService extends Service {
                 });
                 thread.start();
                 thread.sleep(100);
-
-
-
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
@@ -144,19 +137,6 @@ public class RecordingService extends Service {
                     Log.v(LOG_TAG, "mcall is null");
                 }
             }
-
-
-
-    public void pauseRecording(){
-        //暂停录音
-        mRecorder.pause();
-    }
-
-    public void resumeRecording(){
-        //继续录音
-        mRecorder.resume();
-    }
-
     public void stopRecording() {
         //停止录音
         mRecorder.stop();
@@ -168,7 +148,6 @@ public class RecordingService extends Service {
         try {
             //把录音文件的信息存储到数据库
             mDatabase.addRecording(mFileName, mFilePath, mElapsedMillis);
-
         } catch (Exception e){
             Log.e(LOG_TAG, "exception", e);
         }

@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -24,7 +23,7 @@ import android.widget.Toast;
 
 
 import com.suzhaomin.voice_recorder.DBHelper;
-import com.suzhaomin.voice_recorder.Fragments.PlaybackDialogFragment;
+import com.suzhaomin.voice_recorder.Fragments.PlayFragment;
 import com.suzhaomin.voice_recorder.Listeners.OnDatabaseChangedListener;
 import com.suzhaomin.voice_recorder.R;
 import com.suzhaomin.voice_recorder.RecordingItem;
@@ -36,34 +35,39 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.suzhaomin.voice_recorder.Fragments.RecycleviewFragment.isopened;
+
 
 public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.RecordingsViewHolder>
         implements OnDatabaseChangedListener {
 
     private static final String LOG_TAG = "FileViewerAdapter";
-
     private DBHelper mDatabase;
-
     RecordingItem item;
     Context mContext;
     LinearLayoutManager llm;
+    //状态标志
     public static boolean showCheckBox=false;
     public static boolean Deletemodel=false;
+    public static boolean isopened=false;
     //这个是checkbox的Hashmap集合
     public static HashMap<Integer, Boolean> map ;
-
-
     public static boolean isShowCheckBox() {
         return showCheckBox;
     }
     public static void setShowCheckBox(boolean scb) {
         showCheckBox = scb;
     }
-
     public static boolean isDeletemodel() {
         return Deletemodel;
     }
     public static void setDeletemodel(boolean scb) {
+        Deletemodel = scb;
+    }
+    public static boolean isIsopened() {
+        return Deletemodel;
+    }
+    public static void setIsopened(boolean scb) {
         Deletemodel = scb;
     }
     public void singlesel(int postion) {
@@ -84,7 +88,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         map = new HashMap<>();
         for (int i = 0; i < 1000; i++)
             map.put(i, false);
-
+        isopened=false;
     }
 
     @Override
@@ -142,8 +146,9 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                     Log.v("Agasfga","按了positon+把他丢进油锅"+position);
                     //刷新适配器
                     notifyDataSetChanged();
-                    //单选,这个应该用在一个确定按钮里面，随后刷新控件
+                    //单选,这里暂时没有用到
 //                    singlesel(position);
+
                 }
             });
         }else{
@@ -154,8 +159,8 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                     try {
                         if(!showCheckBox)
                         {
-                            PlaybackDialogFragment playbackFragment =
-                                    new PlaybackDialogFragment().newInstance(getItem(holder.getPosition()));
+                            PlayFragment playbackFragment =
+                                    new PlayFragment().newInstance(getItem(holder.getPosition()));
 
                             FragmentTransaction transaction = ((FragmentActivity) mContext)
                                     .getSupportFragmentManager()
@@ -177,12 +182,8 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                         ArrayList<String> entrys = new ArrayList<String>();
                         entrys.add(mContext.getString(R.string.dialog_file_share));
                         entrys.add(mContext.getString(R.string.dialog_file_rename));
-//                entrys.add(mContext.getString(R.string.dialog_file_delete));
-
+                        entrys.add(mContext.getString(R.string.dialog_file_delete));
                         final CharSequence[] items = entrys.toArray(new CharSequence[entrys.size()]);
-
-
-                        // File delete confirm
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setTitle(mContext.getString(R.string.dialog_title_options));
                         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -191,10 +192,10 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                                     shareFileDialog(holder.getPosition());
                                 } if (item == 1) {
                                     renameFileDialog(holder.getPosition());
+                                }if (item == 2) {
+                                    setIsopened(true);
+                                    notifyDataSetChanged();
                                 }
-//                        else if (item == 2) {
-//                            deleteFileDialog(holder.getPosition());
-//                        }
                             }
                         });
                         builder.setCancelable(true);
@@ -212,7 +213,6 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                 }
             });
         }
-
     }
 
 
@@ -223,9 +223,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         View itemView = LayoutInflater.
                 from(parent.getContext()).
                 inflate(R.layout.cardview, parent, false);
-
         mContext = parent.getContext();
-
         return new RecordingsViewHolder(itemView);
     }
 
@@ -256,7 +254,6 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
     @Override
     public void onNewDatabaseEntryAdded() {
-        //item added to top of the list
         notifyItemInserted(getItemCount() - 1);
         llm.scrollToPosition(getItemCount() - 1);
     }
@@ -264,22 +261,15 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     @Override
     //TODO
     public void onDatabaseEntryRenamed() {
-
     }
 
     public void remove(int position) {
-        //remove item from database, recyclerview and storage
-
-        //delete file from storage
         Log.v("Agasfga",position+"在瑟瑟发抖");
         File file;
         if((getItem(position).getFilePath()!=null)){
             file= new File(getItem(position).getFilePath());
             file.delete();
         }else return;
-
-
-
         Toast.makeText(
                 mContext,
                 String.format(
@@ -293,26 +283,21 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         notifyItemRemoved(position);
     }
 
-    //TODO
+
     public void removeOutOfApp(String filePath) {
-        //user deletes a saved recording out of the application through another application
     }
 
     public void rename(int position, String name) {
-        //rename a file
-
         String mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFilePath += "/SoundRecorder/" + name;
         File f = new File(mFilePath);
 
         if (f.exists() && !f.isDirectory()) {
-            //file name is not unique, cannot rename file.
+            //如果该名字存在
             Toast.makeText(mContext,
                     String.format(mContext.getString(R.string.toast_file_exists), name),
                     Toast.LENGTH_SHORT).show();
-
         } else {
-            //file name is unique, rename file
             File oldFilePath = new File(getItem(position).getFilePath());
             oldFilePath.renameTo(f);
             mDatabase.renameItem(getItem(position), name, mFilePath);
@@ -329,14 +314,10 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     }
 
     public void renameFileDialog (final int position) {
-        // File rename dialog
         AlertDialog.Builder renameFileBuilder = new AlertDialog.Builder(mContext);
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.dialog_rename, null);
-
         final EditText input = (EditText) view.findViewById(R.id.new_name);
-
         renameFileBuilder.setTitle(mContext.getString(R.string.dialog_title_rename));
         renameFileBuilder.setCancelable(true);
         renameFileBuilder.setPositiveButton(mContext.getString(R.string.dialog_action_ok),
@@ -345,11 +326,9 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                         try {
                             String value = input.getText().toString().trim() + ".mp4";
                             rename(position, value);
-
                         } catch (Exception e) {
                             Log.e(LOG_TAG, "exception", e);
                         }
-
                         dialog.cancel();
                     }
                 });
@@ -364,36 +343,4 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         AlertDialog alert = renameFileBuilder.create();
         alert.show();
     }
-
-    public void deleteFileDialog (final int position) {
-        // File delete confirm
-        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(mContext);
-        confirmDelete.setTitle(mContext.getString(R.string.dialog_title_delete));
-        confirmDelete.setMessage(mContext.getString(R.string.dialog_text_delete));
-        confirmDelete.setCancelable(true);
-        confirmDelete.setPositiveButton(mContext.getString(R.string.dialog_action_yes),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try {
-                            //remove item from database, recyclerview, and storage
-                            remove(position);
-
-                        } catch (Exception e) {
-                            Log.e(LOG_TAG, "exception", e);
-                        }
-
-                        dialog.cancel();
-                    }
-                });
-        confirmDelete.setNegativeButton(mContext.getString(R.string.dialog_action_no),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert = confirmDelete.create();
-        alert.show();
-    }
-
 }

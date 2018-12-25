@@ -126,7 +126,7 @@ public class RecorderFragment extends Fragment{
             isBind =getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
             getActivity().startService(intent);
             //keep screen on while recording
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } else {
             //stop recording
             mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
@@ -164,29 +164,6 @@ public class RecorderFragment extends Fragment{
 
         }
     };
-
-
-    //暂停事件
-//    private void onPauseRecord(boolean pause) {
-////        if (pause) {
-////            //pause recording
-////            mPauseButton.setCompoundDrawablesWithIntrinsicBounds
-////                    (R.drawable.ic_media_play ,0 ,0 ,0);
-////            mRecordingPrompt.setText((String)getString(R.string.resume_recording_button).toUpperCase());
-////            timeWhenPaused = mChronometer.getBase() - SystemClock.elapsedRealtime();
-////            mChronometer.stop();
-////        } else {
-////            //resume recording
-////            mPauseButton.setCompoundDrawablesWithIntrinsicBounds
-////                    (R.drawable.ic_media_pause ,0 ,0 ,0);
-////            mRecordingPrompt.setText((String)getString(R.string.pause_recording_button).toUpperCase());
-////            mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
-////            mChronometer.start();
-////        }
-////    }
-
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
